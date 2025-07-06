@@ -3,14 +3,14 @@
 Запуск сервера:
 
 ```bash
-npm ci
+npm install
 npm start
 ```
 
 Если используете yarn вместо npm:
 
 ```bash
-yarn install --frozen-lockfile
+yarn install
 yarn start
 ```
 
