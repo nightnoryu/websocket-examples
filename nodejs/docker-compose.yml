@@ -1,0 +1,10 @@
+services:
+  websocket-server:
+    build: .
+    container_name: websocker-server
+    volumes:
+      - "./server.js:/app/server.js"
+      - "./index.html:/app/index.html"
+      - "/app/node_modules"
+    ports:
+      - "127.0.0.1:8080:8080"
