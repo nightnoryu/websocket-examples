@@ -2,6 +2,7 @@ import fs from 'fs';
 import { createServer } from 'http';
 import WebSocket, { WebSocketServer } from 'ws';
 
+// Основа - простой HTTP-сервер для отдачи фронтенда
 const server = createServer((request, response) => {
   console.log(`${request.method} ${request.url}`)
 
@@ -25,12 +26,16 @@ const server = createServer((request, response) => {
 });
 
 const websocketServer = new WebSocketServer({ noServer: true });
+// Список открытых соединений
 const clients = [];
 
 websocketServer.on('connection', ws => {
+  // Сохраняем новое соединение
   clients.push(ws);
 
+  // Обработчик сообщений от клиентов
   ws.on('message', message => {
+    // Пересылаем сообщение всем клиентам
     clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN)
       {
@@ -39,11 +44,14 @@ websocketServer.on('connection', ws => {
     })
   });
 
+  // Обработчик закрытия соединения со стороны клиента
   ws.on('close', () => {
+    // Убираем клиента из списка соединений
     clients.splice(clients.indexOf(ws), 1);
   });
 });
 
+// Хэндлер, выполняющий переход соединения с http:// на ws://
 server.on('upgrade', (request, socket, head) => {
   websocketServer.handleUpgrade(request, socket, head, ws => {
     websocketServer.emit('connection', ws, request);

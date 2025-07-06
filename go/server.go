@@ -29,8 +29,8 @@ func (s *WebsocketServer) Handler(w http.ResponseWriter, r *http.Request) {
 		if err != nil || mt == websocket.CloseMessage {
 			break
 		}
-		// Пересылаем сообщение всем клиентам.
-		// Используем запуск в горутине, чтобы не останавливать поток обработки.
+		// Пересылаем сообщение всем клиентам
+		// Используем запуск в горутине, чтобы не останавливать поток обработки
 		go s.handleMessage(message)
 	}
 }
